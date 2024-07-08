@@ -9,6 +9,8 @@ Domain: VLSI.
 Duration: June to July 2024. 
 
 
+
+
 OVERVIEW OF PROJECT 
 
 Project: Digital Logic Design with Verilog.
