@@ -1,0 +1,174 @@
+// LOGIC GATES :
+module gates(
+    input a,
+    input b,
+    output y1,y2,y3,y4,y5,y6,y7
+    );
+    assign y1=a&b; // AND gate
+    assign y2=a|b; // OR gate
+    assign y3=a^b; // XOR gate
+    assign y4=~(a&b); // NAND gate
+    assign y5=~(a|b); // NOR gate
+    assign y6=a~^b; // XNOR gate
+    assign y7=~a; // NOT gate
+endmodule
+//TEST BENCH : 
+module GATES_TB();
+    reg a,b;
+    wire o1,o2,o3,o4,o5,o6,o7;
+    gates g(a,b,o1,o2,o3,o4,o5,o6,o7);
+    initial
+    begin
+    a=1'b0;b=1'b0;
+    #5 a=1'b0;b=1'b1;
+    #5 a=1'b1;b=1'b0;
+    #5 a=1'b1;b=1'b1;
+    #5 $finish;
+    end
+endmodule
+
+//HALF AND FULL ADDER :
+module adder(
+    input a,
+    input b,
+    input cin,
+    output sum_h,
+    output co_h,
+    output sum_f,
+    output co_f
+    );
+    assign sum_h = a^b; // half adder sum
+    assign co_h = a&b; // half adder carry
+    assign sum_f = a^b^cin; // full adder sum
+    assign co_f = (a&b)|(b&cin)|(a&cin); // full adder carry
+endmodule
+//TEST BENCH :
+module adder_tb();
+reg a,b,c;
+wire s1,c1,s2,c2;
+adder a1(a,b,c,s1,c1,s2,c2);
+initial
+begin
+#5 {a,b,c} = 0;
+#5 {a,b,c} = 1;
+#5 {a,b,c} = 2;
+#5 {a,b,c} = 3;
+#5 {a,b,c} = 4;
+#5 {a,b,c} = 5;
+#5 {a,b,c} = 6;
+#5 {a,b,c} = 7;
+#5 $finish;
+end
+endmodule
+
+MUX 2:1 :
+module mux2(
+    input a,
+    input b,
+    input s, // selection line
+    output reg o // output
+    );
+    always@(*)
+    begin
+    case(s)
+    1'b0 : o = a;
+    1'b1 : o = b;
+    default : o = a;
+    endcase
+    end
+endmodule
+//TEST BENCH : 
+module mux2_tb();
+reg a,b,s;
+wire o;
+mux2 m(a,b,s,o);
+initial
+begin
+a=1;b=0;s=1'b0;
+#10 s=1'b1;
+#10 $finish;
+end
+endmodule
+
+MUX 4:1 :
+module mux4(
+    input [1:0] a,
+    input [1:0] b,
+    input [1:0] c,
+    input [1:0] d,
+    input [1:0] s, // 2-bit selection line
+    output reg [1:0] o // output
+    );
+    always@(*)
+    begin
+    case(s)
+    2'b00 : o = a;
+    2'b01 : o = b;
+    2'b10 : o = c;
+    2'b11 : o = d;
+    default : o = a;
+    endcase
+    end
+endmodule
+//TEST BENCH :
+module mux4_tb();
+reg [1:0] a,b,c,d,s;
+wire [1:0] o;
+mux4 m(a,b,c,d,s,o);
+initial
+begin
+a=2'o0;b=2'o1;c=2'o2;d=2'o3;
+#10 s=2'o0;
+#10 s=2'o1;
+#10 s=2'o2;
+#10 s=2'o3;
+#10 $finish;
+end
+endmodule
+
+MUX 8:1 :
+module mux8(
+input [7:0] in, // 8-bit input
+input [2:0] sel, // 3-bit selection line
+output out);
+    assign out = in[sel];
+endmodule
+TEST BENCH :
+module mux8_tb();
+reg [7:0]a; reg [2:0]s; wire o;
+mux8 m(.in(a),.sel(s),.out(o)); // module instantiation explicitly
+initial
+begin
+$dumpfile("mux8.vcd"); // dumping file
+$dumpvars(0,mux8_tb); // dumping variables
+$monitor($time," a: %o s: %o out: %b",a,s,o);
+#10 a=8'h52; s=3'b011;
+#5 s=3'b101;
+#5 s=3'b111;
+#5 $finish;
+end
+endmodule
+
+MUX 16:1 :
+module mux16(
+    input [15:0] in, // 16-bit input
+    input [3:0] sel, // 4-bit selection line
+    output out
+    );
+    assign out = in[sel];
+endmodule
+//TEST BENCH : 
+module mux16_tb();
+reg [15:0]a;reg [3:0]s;wire o;
+mux16 m(.in(a),.sel(s),.out(o)); // module instantiation explicitly
+initial
+begin
+$dumpfile("mux16.vcd");
+$dumpvars(0,mux16_tb);
+$monitor($time," a: %h s: %h o: %b",a,s,o);
+#10 a=16'hd6b8; s=4'h5;
+#5 s=4'h8;
+#5 s=4'hf;
+#5 $finish;
+end
+endmodule
