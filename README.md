@@ -3,6 +3,8 @@ Company: CODTECH IT SOLUTIONS
 ID: CT08DS3102 
 Domain: VLSI 
 Duration: June to July 2024 
+
+
 Overview of the Project 
 Project: Digital Logic Design with Verilog
 Objective:
